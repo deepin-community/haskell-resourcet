@@ -1,5 +1,5 @@
 Name:                resourcet
-Version:             1.2.4.2
+Version:             1.2.6
 Synopsis:            Deterministic allocation and freeing of scarce resources.
 description:         Hackage documentation generation is not reliable. For up to date documentation, please see: <http://www.stackage.org/package/resourcet>.
 License:             BSD3
@@ -19,12 +19,12 @@ Library
                        Data.Acquire
                        Data.Acquire.Internal
                        UnliftIO.Resource
-  Build-depends:       base                     >= 4.9          && < 5
+  Build-depends:       base                     >= 4.12         && < 5
                      , containers
                      , transformers             >= 0.4
-                     , mtl                      >= 2.0          && < 2.3
+                     , mtl                      >= 2.0          && < 2.4
                      , exceptions               (== 0.8.* || == 0.10.*)
-                     , unliftio-core
+                     , unliftio-core >= 0.1.1.0
                      , primitive
   ghc-options:     -Wall
 
