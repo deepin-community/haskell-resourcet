@@ -40,7 +40,9 @@ import Control.Monad.State.Class  ( MonadState (..) )
 import Control.Monad.Writer.Class ( MonadWriter (..) )
 
 import Control.Monad.Trans.Identity ( IdentityT)
+#if !MIN_VERSION_transformers(0,6,0)
 import Control.Monad.Trans.List     ( ListT    )
+#endif
 import Control.Monad.Trans.Maybe    ( MaybeT   )
 import Control.Monad.Trans.Except   ( ExceptT  )
 import Control.Monad.Trans.Reader   ( ReaderT  )
@@ -220,6 +222,10 @@ instance Applicative m => Applicative (ResourceT m) where
     pure = ResourceT . const . pure
     ResourceT mf <*> ResourceT ma = ResourceT $ \r ->
         mf r <*> ma r
+    ResourceT mf *> ResourceT ma = ResourceT $ \r ->
+        mf r *> ma r
+    ResourceT mf <* ResourceT ma = ResourceT $ \r ->
+        mf r <* ma r
 
 -- | Since 1.1.5
 instance Alternative m => Alternative (ResourceT m) where
@@ -263,7 +269,9 @@ instance MonadUnliftIO m => MonadUnliftIO (ResourceT m) where
 #define GO(T) instance (MonadResource m) => MonadResource (T m) where liftResourceT = lift . liftResourceT
 #define GOX(X, T) instance (X, MonadResource m) => MonadResource (T m) where liftResourceT = lift . liftResourceT
 GO(IdentityT)
+#if !MIN_VERSION_transformers(0,6,0)
 GO(ListT)
+#endif
 GO(MaybeT)
 GO(ExceptT e)
 GO(ReaderT r)
